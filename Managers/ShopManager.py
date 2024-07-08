@@ -15,7 +15,7 @@ def command():
             data=data.split('\n')
             data=data[-1]
             a, b=data.split('-')
-            array=array.split(',')
+            array=a.split(',')
             length=len(array)
             for i in range(length):
                 array[i]=int(array)
