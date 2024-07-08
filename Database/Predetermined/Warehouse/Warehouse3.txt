@@ -1,0 +1,3 @@
+Paint-2,3
+BikeFrame-1,1
+BikeFramePainted-0,0

@@ -1,0 +1,7 @@
+Battery-1,1
+Wire-4,5
+Piston-2,2
+UpperPlate-0,1
+BottomPlate-0,1
+Engine-0,0
+Frame-0,0

@@ -1,0 +1,4 @@
+BikeFramePainted-0,1
+Tyre-2,2
+Screw-1,10
+Bike-2,0
