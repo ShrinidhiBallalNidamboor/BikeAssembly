@@ -28,11 +28,6 @@ def warehouse(i, component):
                 return [int(b[0]), int(b[1])]
     return None
 
-def warehousecomponents(i):
-    with open(filepath[i+8], 'r') as file:
-        data=file.read()
-        print(data)
-
 def storewarehouse(i, component, value):
     array=[]
     with open(filepath[i+8], 'r') as file:
@@ -75,7 +70,7 @@ def sendgoods(msg, to, components):
         storewarehouse(to,i[0],value)
 
 def command(i,next,list):
-    readfile(filepath[6])
+    print(readfile(filepath[6]))
     while True:
         print('1. Order Products from shop')
         print('2. Send finished products')
@@ -84,7 +79,8 @@ def command(i,next,list):
         print('5. Exit')
         commandinput=input('Enter the command: ')
         if commandinput=='1':
-            print('Items available in the shop:', warehousecomponents(i))
+            print('Items available in the shop:')
+            print(readfile(i+8))
             order=input('Enter the quantity of items needed for each item separate by commas: ')
             notify(order+'-'+str(i)+'\n', [4])
             print('Order Placed')
@@ -108,6 +104,7 @@ def command(i,next,list):
             for j in val:
                 storewarehouse(i,j[0],j[1])
         elif commandinput=='4':
-            print('Warehouse: ', warehousecomponents(i))
+            print('Warehouse: ')
+            print(readfile(i+8))
         else:
             break

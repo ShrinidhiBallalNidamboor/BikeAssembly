@@ -6,8 +6,8 @@ from Define import filepath
 
 try:
     createmessenger()
-    readfile(filepath[6])
-    readfile(filepath[7])
+    print(readfile(filepath[6]))
+    print(readfile(filepath[7]))
     print('Bikes in warehouse is '+str(warehouse(4,'Bike')[0]))
     target=input('Enter the target: ')
     notify('Target for the day is '+target, [0, 1, 2, 3]) 
