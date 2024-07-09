@@ -1,5 +1,4 @@
-import threading
-
+import time
 filepath=[]
 filepath.append('../Database/Messenger/Manager1.txt')
 filepath.append('../Database/Messenger/Manager2.txt')
@@ -55,12 +54,6 @@ def createmessenger():
 def readfile(filepath):
     with open(filepath, 'r') as file:
         data=file.read()
-        print(data)
-
-def getfile(filepath):
-    data=''
-    with open(filepath, 'r') as file:
-        data=file.read()
         return data
 
 def sendgoods(msg, to, components):
@@ -80,7 +73,7 @@ def command(i,next,list):
         commandinput=input('Enter the command: ')
         if commandinput=='1':
             print('Items available in the shop:')
-            print(readfile(i+8))
+            print(readfile(filepath[i+8]))
             order=input('Enter the quantity of items needed for each item separate by commas: ')
             notify(order+'-'+str(i)+'\n', [4])
             print('Order Placed')
@@ -88,8 +81,8 @@ def command(i,next,list):
             val=[]
             for j in list:
                 val.append([j[0],warehouse(0,j[0])[0]])
-            timer_thread=threading.Timer(30.0, sendgoods, args=('Ordered Goods delivered', next, val))
-            timer_thread.start()
+            time.sleep(10)
+            sendgoods('Ordered Goods delivered', next, val)
             for j in list:
                 storewarehouse(i,j[0],0)
             print('Goods transferred')
@@ -105,6 +98,6 @@ def command(i,next,list):
                 storewarehouse(i,j[0],j[1])
         elif commandinput=='4':
             print('Warehouse: ')
-            print(readfile(i+8))
+            print(readfile(filepath[i+8]))
         else:
             break
