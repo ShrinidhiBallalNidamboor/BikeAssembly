@@ -1,7 +1,7 @@
-Battery-13,1
+Battery-0,1
 Wire-7,5
 Piston-4,2
-UpperPlate-1,1
-BottomPlate-3,1
+UpperPlate-0,1
+BottomPlate-0,1
 Engine-0,0
 Frame-0,0
