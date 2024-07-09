@@ -1,3 +1,5 @@
+import threading
+
 filepath=[]
 filepath.append('../Database/Messenger/Manager1.txt')
 filepath.append('../Database/Messenger/Manager2.txt')
@@ -15,21 +17,35 @@ filepath.append('../Database/Predetermined/Warehouse/Warehouse3.txt')
 filepath.append('../Database/Predetermined/Warehouse/Warehouse4.txt')
 filepath.append('../Database/Predetermined/Warehouse/Warehouse5.txt')
 
-warehouses={}
-warehouses[0]={}
-warehouses[1]={}
-warehouses[2]={}
-warehouses[3]={}
+def warehouse(i, component):
+    with open(filepath[i+8], 'r') as file:
+        data=file.read()
+        data=data.split('\n')
+        for j in data:
+            a, b=j.split('-')
+            b=b.split(',')
+            if a==component:
+                return [int(b[0]), int(b[1])]
+    return None
 
-def warehouse():
-    for i in range(5):
-        with open(filepath[i+7], 'r') as file:
-            data=file.read()
-            data=data.split('\n')
-            for j in data:
-                a, b=j.split('-')
-                b=b.split(',')
-                warehouses[i][a]=[int(b[0]), int(b[1])]
+def warehousecomponents(i):
+    with open(filepath[i+8], 'r') as file:
+        data=file.read()
+        print(data)
+
+def storewarehouse(i, component, value):
+    array=[]
+    with open(filepath[i+8], 'r') as file:
+        data=file.read()
+        data=data.split('\n')
+        for j in data:
+            a,b=j.split('-')
+            b=b.split(',')
+            if a==component:
+                array.append(a+'-'+str(value)+','+b[1])
+            else:
+                array.append(j)
+    return None
 
 def notify(message, list):
     for i in list:
@@ -37,18 +53,9 @@ def notify(message, list):
             file.write(message)
 
 def createmessenger():
-    a=filepath[0]
-    b=filepath[1]
-    c=filepath[2]
-    d=filepath[3]
-    with open(a, 'w') as file:
-        file.write('')
-    with open(b, 'w') as file:
-        file.write('')
-    with open(c, 'w') as file:
-        file.write('')
-    with open(d, 'w') as file:
-        file.write('')
+    for i in range(6):
+        with open(filepath[i], 'w') as file:
+            file.write('')
 
 def readfile(filepath):
     with open(filepath, 'r') as file:
@@ -64,7 +71,43 @@ def getfile(filepath):
 def sendgoods(msg, to, components):
     notify(msg, [to])
     for i in components:
-        try:
-            warehouses[to][i[0]][0]+=i[1]
-        except:
-            print('',end='')
+        value=warehouse(to,i[0])[0]+i[1]
+        storewarehouse(to,i[0],value)
+
+def command(i,next,list):
+    readfile(filepath[6])
+    while True:
+        print('1. Order Products from shop')
+        print('2. Send finished products')
+        print('3. Assemble or paint')
+        print('4. Check warehouse')
+        print('5. Exit')
+        commandinput=input('Enter the command: ')
+        if commandinput=='1':
+            print('Items available in the shop:', warehousecomponents(i))
+            order=input('Enter the quantity of items needed for each item separate by commas: ')
+            notify(order+'-'+str(i)+'\n', [4])
+            print('Order Placed')
+        elif commandinput=='2':
+            val=[]
+            for j in list:
+                val.append([j[0],warehouse(0,j[0])[0]])
+            timer_thread=threading.Timer(30.0, sendgoods, args=('Ordered Goods delivered', next, val))
+            timer_thread.start()
+            for j in list:
+                storewarehouse(i,j[0],0)
+            print('Goods transferred')
+        elif commandinput=='3':
+            val=[]
+            for j in list:
+                minimum=[]
+                for k in j[1]:
+                    minimum.append(warehouse(i,k)[0]//warehouse(i,k)[1])
+                minimum=min(minimum)
+                val.append([j[0],warehouse(i,j[0])[0]+minimum])
+            for j in val:
+                storewarehouse(i,j[0],j[1])
+        elif commandinput=='4':
+            print('Warehouse: ', warehousecomponents(i))
+        else:
+            break
