@@ -13,6 +13,6 @@ elif commandinput=='2':
 elif commandinput=='3':
     command(2,3,[['BikeFramePainted',['BikeFrame','Paint']]])
 else:
-    command(3,5,[['Bike',['BikeFramePainted','Screw','Tyre']]])
+    command(3,4,[['Bike',['BikeFramePainted','Screw','Tyre']]])
 
 
